@@ -2,48 +2,216 @@
 layout: base.njk
 title: Lillian Trent — Portfolio
 ---
-<div class="bubble" style="width:120px;height:120px;top:60px;left:6%;"></div>
-<div class="bubble" style="width:60px;height:60px;top:220px;left:18%;"></div>
-<div class="bubble" style="width:90px;height:90px;top:40px;right:10%;"></div>
-<div class="bubble" style="width:40px;height:40px;top:180px;right:22%;"></div>
-<div class="sparkle" style="top:90px;left:26%;"></div>
-<div class="sparkle small" style="top:150px;left:34%;"></div>
-<div class="sparkle small" style="top:110px;right:28%;"></div>
-<div class="sparkle" style="top:250px;right:16%;"></div>
+<div class="desktop-viewport">
+  <div class="desktop-canvas">
 
-<header class="page-head" style="padding-top:100px; padding-bottom:20px;">
-  <h1 style="font-size:clamp(40px, 7vw, 76px);">hi, i'm lily</h1>
-  <p style="font-size:19px; max-width:520px;">computer scientist, digital artist, and writer building tools and worlds where technology feels a little more human.</p>
-  <div class="cta-row" style="margin-top:24px;">
-    <a class="glass-btn" href="/gallery/">see my art</a>
-    <a class="glass-btn" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
-    <a class="glass-btn" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
-  </div>
-</header>
+    <div class="bubble-layer"></div>
 
-<section id="writing">
-  <div class="section-heading">latest writing</div>
-  <div class="section-sub">short fiction, worldbuilding notes, and essays.</div>
-  <div class="writing-list">
-  {%- for post in collections.posts | reverse | head(3) %}
-    <div class="write-card">
-      <div class="win-bar"><span>{{ post.data.title }}.md</span><div class="dots"><i></i><i></i></div></div>
-      <div class="write-body">
-        <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
-        <p class="meta">{{ post.data.date | date("%B %d, %Y") }}</p>
-        <p>{{ post.data.excerpt }}</p>
+    <div class="sparkle" style="top:70px; left:520px;"></div>
+    <div class="sparkle small" style="top:340px; left:900px;"></div>
+    <div class="sparkle" style="top:90px; left:1420px;"></div>
+    <div class="sparkle small" style="top:480px; left:1720px;"></div>
+    <div class="sparkle" style="top:200px; left:2050px;"></div>
+    <div class="sparkle small" style="top:60px; left:280px;"></div>
+
+    <div class="desktop-icon" style="left:44px; top:36px;">
+      <div class="icon-link" data-window="#gallery-window" role="button" tabindex="0">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 4C11 4 4 12 4 22c0 6 4 9 9 9 2 0 3-1 3-3 0-1-1-2-1-3 0-2 2-3 4-3h6c6 0 9-4 9-9C34 8 28 4 22 4z" fill="#f3e6c8" stroke="#0c3a4d" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="14" cy="16" r="2.6" fill="#e0679c"/>
+            <circle cx="22" cy="11.5" r="2.6" fill="#7fbf3d"/>
+            <circle cx="29" cy="16" r="2.6" fill="#3fa7dd"/>
+            <circle cx="16" cy="24" r="2.6" fill="#dda73f"/>
+          </svg>
+        </span>
+        <span class="icon-label">art</span>
       </div>
     </div>
-  {%- endfor %}
-  </div>
-  <div style="text-align:center; margin-top:28px;">
-    <a class="glass-btn" href="/writing/">read more writing</a>
-  </div>
-</section>
 
-<section id="about">
-  <div class="section-heading">about</div>
-  <div class="section-sub" style="max-width:640px;">
-    computer science student at georgia tech, working at the intersection of ml, hci, and healthcare accessibility. founder of fiat scientia. when i'm not building software, i'm drawing, writing, or making games.
+    <div class="desktop-icon" style="left:44px; top:140px;">
+      <div class="icon-link" data-window="#writing-window" role="button" tabindex="0">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <g transform="rotate(45 22 22)">
+              <path d="M1.5 19 L8 19 L8 25 L1.5 25 L-1 22 Z" fill="#f2c48c" stroke="#0c3a4d" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M-1 22 L1.5 19 L1.5 25 Z" fill="#3d2b1f"/>
+              <rect x="8" y="19" width="21" height="6" fill="#f5d76e" stroke="#0c3a4d" stroke-width="1.5"/>
+              <rect x="29" y="19" width="6" height="6" fill="#e7e7e7" stroke="#0c3a4d" stroke-width="1.5"/>
+              <rect x="35" y="19" width="6" height="6" rx="1.5" fill="#e0679c" stroke="#0c3a4d" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </span>
+        <span class="icon-label">writing</span>
+      </div>
+    </div>
+
+    <div class="desktop-icon" style="left:44px; top:244px;">
+      <div class="icon-link" data-window="#experience-window" role="button" tabindex="0">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="32" height="22" rx="3" fill="#ece7da" stroke="#0c3a4d" stroke-width="2"/>
+            <rect x="10" y="10" width="24" height="14" rx="1" fill="#3fa7dd" stroke="#0c3a4d" stroke-width="1.5"/>
+            <rect x="16" y="28" width="12" height="4" fill="#cfc8b4" stroke="#0c3a4d" stroke-width="1.5"/>
+            <rect x="11" y="32" width="22" height="4" rx="1" fill="#ece7da" stroke="#0c3a4d" stroke-width="2"/>
+            <circle cx="30" cy="25.5" r="1.2" fill="#0c3a4d"/>
+          </svg>
+        </span>
+        <span class="icon-label">work</span>
+      </div>
+    </div>
+
+    <div class="desktop-icon" style="left:44px; top:348px;">
+      <a class="icon-link" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="8" width="34" height="26" rx="3" fill="#0c3a4d" stroke="#0c3a4d" stroke-width="2"/>
+            <rect x="5" y="8" width="34" height="7" rx="3" fill="#3d6b7d"/>
+            <circle cx="9.5" cy="11.5" r="1.1" fill="#bfe9ff"/>
+            <circle cx="13" cy="11.5" r="1.1" fill="#bfe9ff"/>
+            <circle cx="16.5" cy="11.5" r="1.1" fill="#bfe9ff"/>
+            <path d="M10 26 L15 21 L10 16" fill="none" stroke="#7fbf3d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="18" y1="26" x2="27" y2="26" stroke="#dda73f" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="icon-label">github</span>
+      </a>
+    </div>
+
+    <div class="desktop-icon" style="left:44px; top:452px;">
+      <a class="icon-link" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="30" r="5" fill="#3fa7dd" stroke="#0c3a4d" stroke-width="2"/>
+            <circle cx="30" cy="12" r="5" fill="#dda73f" stroke="#0c3a4d" stroke-width="2"/>
+            <circle cx="32" cy="32" r="5" fill="#e0679c" stroke="#0c3a4d" stroke-width="2"/>
+            <line x1="15.5" y1="27" x2="26.5" y2="15" stroke="#0c3a4d" stroke-width="2.2"/>
+            <line x1="16" y1="31" x2="27.5" y2="32" stroke="#0c3a4d" stroke-width="2.2"/>
+          </svg>
+        </span>
+        <span class="icon-label">linkedin</span>
+      </a>
+    </div>
+
+    <div class="desktop-window popup" id="gallery-window" style="left:930px; top:50px; width:380px;">
+      <div class="win-bar">
+        <span>gallery.pic</span>
+        <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
+      </div>
+      <div class="win-body">
+        <div class="gallery-preview" style="height:170px; border-radius:10px; border:1px solid rgba(255,255,255,0.9);"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px;">
+          <button type="button" class="glass-btn icon-btn gallery-prev" aria-label="previous">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
+          </button>
+          <div style="text-align:center;">
+            <div class="gallery-filename" style="font-size:12px; font-weight:700; color:var(--glass-deep);"></div>
+            <div class="gallery-caption" style="font-size:11.5px; color:var(--ink-soft);"></div>
+          </div>
+          <button type="button" class="glass-btn icon-btn gallery-next" aria-label="next">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
+          </button>
+        </div>
+        <div class="gallery-thumbs" style="display:flex; gap:6px; overflow-x:auto; margin-top:10px; padding-bottom:2px;">
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#9fe3ff,#4aa8d8);"></div>
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#c9f6a8,#7fbf3d);"></div>
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#ffe3ac,#f0a54e);"></div>
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#d9c8ff,#8f6fe0);"></div>
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#ffc7dd,#e0679c);"></div>
+          <div class="gallery-thumb" style="background:linear-gradient(160deg,#b9f3ea,#3fa7dd);"></div>
+        </div>
+        <div style="text-align:center; margin-top:10px;">
+          <a class="popup-link" href="/gallery/">see the full gallery →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="desktop-window popup" id="experience-window" style="left:930px; top:420px; width:380px;">
+      <div class="win-bar">
+        <span>experience.log</span>
+        <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
+      </div>
+      <div class="win-body" style="max-height:340px; overflow-y:auto;">
+        <div class="exp-row"><b>Associate Software Engineer Intern</b><br><span class="exp-meta">Sonatype — May 2026–Aug 2026</span></div>
+        <div class="exp-row"><b>Full-Stack Software Development Intern</b><br><span class="exp-meta">Infor — May 2025–Aug 2025</span></div>
+        <div class="exp-row"><b>Founder &amp; Lead Developer</b><br><span class="exp-meta">Fiat Scientia — Feb 2025–May 2026</span></div>
+        <div class="exp-row"><b>Document Accessibility Services Student Assistant</b><br><span class="exp-meta">Center for Inclusive Design &amp; Innovation — Aug 2024–Present</span></div>
+        <div class="exp-row"><b>IT Intern &amp; Legal Assistant</b><br><span class="exp-meta">770 Good Law — Jan 2024–Aug 2024</span></div>
+        <div style="text-align:center; margin-top:12px;">
+          <a class="popup-link" href="/experience/">view full experience &amp; projects →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="desktop-window popup" id="writing-window" style="left:930px; top:760px; width:380px;">
+      <div class="win-bar">
+        <span>writing.log</span>
+        <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
+      </div>
+      <div class="win-body" style="max-height:280px; overflow-y:auto;">
+        {%- for post in collections.posts | reverse | head(3) %}
+        <div class="exp-row">
+          <b>{{ post.data.title }}</b><br>
+          <span class="exp-meta">{{ post.data.date | date("%B %d, %Y") }}</span>
+          <p style="margin:6px 0 0; font-size:12.5px; color:var(--ink-soft); line-height:1.5;">{{ post.data.excerpt }}</p>
+        </div>
+        {%- endfor %}
+        <div style="text-align:center; margin-top:12px;">
+          <a class="popup-link" href="/writing/">read all writing →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="desktop-window" style="left:530px; top:16px; width:380px;">
+      <div class="win-bar"><span>welcome.txt</span><div class="dots"><i></i><i></i></div></div>
+      <div class="win-body">
+        <h1 style="font-family:'Baloo 2', sans-serif; font-size:32px; font-weight:700; margin:0 0 8px; background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;">hi, i'm lily</h1>
+        <p style="margin:0 0 16px; color:var(--ink-soft); font-size:14px; line-height:1.6;">computer scientist, digital artist, and writer building tools and worlds where technology feels a little more human. computer science student at georgia tech, working at the intersection of ml, hci, and healthcare accessibility. founder of fiat scientia.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <a class="glass-btn" href="/gallery/">see my art</a>
+          <a class="glass-btn" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
+          <a class="glass-btn" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="desktop-window" style="left:530px; top:262px; width:380px;">
+      <div class="win-bar"><span>new_message.txt</span><div class="dots"><i></i><i></i></div></div>
+      <div class="win-body">
+        <form class="note-form" name="note-to-lily" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="note-to-lily" />
+          <p style="position:absolute; left:-9999px;"><label>don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+          <p style="margin:0 0 10px; font-size:13px; color:var(--ink-soft);">send me a note — it comes straight to my inbox.</p>
+          <input class="field" type="text" name="name" placeholder="your name (optional)">
+          <textarea class="field" name="message" rows="3" placeholder="say hi, ask a question, whatever..." required></textarea>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:4px;">
+            <button type="submit" class="glass-btn">send</button>
+            <span class="status-msg note-status">sent — thanks, i'll read it soon!</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="desktop-window" style="left:530px; top:534px; width:380px;">
+      <div class="win-bar"><span>doodle.pad</span><div class="dots"><i></i><i></i></div></div>
+      <div class="win-body">
+        <p style="margin:0 0 10px; font-size:13px; color:var(--ink-soft);">draw me something — strawpage-style.</p>
+        <canvas class="doodle-canvas" width="344" height="150"></canvas>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:10px;">
+          <button type="button" class="glass-btn doodle-clear">clear</button>
+          <button type="button" class="glass-btn doodle-send">send</button>
+          <span class="status-msg doodle-status">sent — thanks for the doodle!</span>
+        </div>
+      </div>
+    </div>
+
+    <form name="doodle-to-lily" data-netlify="true" enctype="multipart/form-data" hidden>
+      <input type="hidden" name="form-name" value="doodle-to-lily" />
+      <input type="file" name="doodle" />
+    </form>
+
   </div>
-</section>
+  <div class="hint">click and drag to look around — drag a window's title bar to move it</div>
+</div>
+
+<script src="/js/desktop.js" defer></script>
