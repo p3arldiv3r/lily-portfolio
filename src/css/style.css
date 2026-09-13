@@ -199,12 +199,12 @@ footer{
 .desktop-window.popup.is-open{ display:block; }
 .desktop-window .glass-btn:not(.icon-btn){ padding:9px 20px; font-size:13px; }
 .win-close{
-  width:16px; height:16px; border-radius:50%; padding:0; margin-left:2px;
+  width:22px; height:22px; border-radius:50%; padding:0; margin-left:6px;
   display:flex; align-items:center; justify-content:center;
   background:radial-gradient(circle at 30% 30%, #ffe3ea, #e0679c 70%);
   border:1px solid rgba(255,255,255,0.9); cursor:pointer;
 }
-.win-close svg{ width:8px; height:8px; stroke:#7a1f3d; }
+.win-close svg{ width:11px; height:11px; stroke:#7a1f3d; }
 
 .field{
   width:100%; padding:11px 14px; border-radius:10px; user-select:text;

@@ -11,6 +11,9 @@
 <body>
 
 <nav>
+  {%- if page.url == "/" %}
+  <a class="logo" href="/">welcome!</a>
+  {%- else %}
   <a class="logo" href="/">lily.trent</a>
   <div class="nav-links">
     <a href="/gallery/">art</a>
@@ -19,6 +22,7 @@
     <a href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
     <a href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
   </div>
+  {%- endif %}
 </nav>
 
 {{ content | safe }}

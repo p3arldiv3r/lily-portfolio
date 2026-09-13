@@ -15,7 +15,7 @@
     const rand = (a, b) => a + Math.random() * (b - a);
 
     // -- build the bubble field --
-    const BUBBLE_SIZES = [130, 45, 90, 30, 70, 110, 50, 25, 85, 60, 35, 75, 55, 95, 28, 65, 40, 105];
+    const BUBBLE_SIZES = [130, 45, 90, 30, 70, 110, 50, 25, 85, 60, 35, 75, 55, 95, 28, 65, 40, 105, 22, 58, 100, 38, 72, 48, 82, 30];
     BUBBLE_SIZES.forEach((size) => {
       const d = document.createElement('div');
       d.className = 'bubble';
