@@ -328,32 +328,34 @@
         doodleCanvas.toBlob((blob) => {
           if (!blob) return;
           const data = new FormData();
-          data.append('form-name', 'doodle-to-lily');
           data.append('doodle', blob, 'doodle.png');
-          fetch('/', { method: 'POST', body: data })
-            .then(() => flashStatus(doodleStatus, 'sent — thanks for the doodle!'))
+          fetch('/api/doodle', { method: 'POST', body: data })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.ok) flashStatus(doodleStatus, 'sent — thanks for the doodle!');
+              else flashStatus(doodleStatus, "hmm, that didn't send — try again?");
+            })
             .catch(() => flashStatus(doodleStatus, "hmm, that didn't send — try again?"));
         }, 'image/png');
       });
     }
 
-    // -- note form: real Netlify Forms submission --
+    // -- note form: submits to our own /api/note function (Resend under the hood) --
     const noteForm = document.querySelector('.note-form');
     if (noteForm) {
       const noteStatus = noteForm.querySelector('.note-status');
       noteForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(noteForm);
-        const body = new URLSearchParams();
-        formData.forEach((value, key) => body.append(key, value));
-        fetch('/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: body.toString(),
-        })
-          .then(() => {
-            noteForm.reset();
-            flashStatus(noteStatus, "sent — thanks, i'll read it soon!");
+        fetch('/api/note', { method: 'POST', body: formData })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.ok) {
+              noteForm.reset();
+              flashStatus(noteStatus, "sent — thanks, i'll read it soon!");
+            } else {
+              flashStatus(noteStatus, "hmm, that didn't send — try again?");
+            }
           })
           .catch(() => flashStatus(noteStatus, "hmm, that didn't send — try again?"));
       });
