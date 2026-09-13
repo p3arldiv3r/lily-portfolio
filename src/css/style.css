@@ -176,9 +176,10 @@ footer{
 
 /* ---- homepage desktop ---- */
 .desktop-viewport{
-  position:relative; overflow:hidden; height:826px;
+  position:relative; overflow:hidden;
+  height:calc(100vh - 65px); min-height:520px;
   background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 40%, #ffffff 100%);
-  cursor:grab; touch-action:none;
+  cursor:grab; touch-action:none; user-select:none;
 }
 .desktop-viewport.panning{ cursor:grabbing; }
 .desktop-canvas{ position:absolute; top:0; left:0; width:2600px; height:1500px; will-change:transform; }
@@ -193,8 +194,10 @@ footer{
   z-index:10;
 }
 .desktop-window .win-bar{ cursor:grab; user-select:none; touch-action:none; }
+.desktop-window .win-body{ padding:20px 22px 24px; }
 .desktop-window.popup{ display:none; }
 .desktop-window.popup.is-open{ display:block; }
+.desktop-window .glass-btn:not(.icon-btn){ padding:9px 20px; font-size:13px; }
 .win-close{
   width:16px; height:16px; border-radius:50%; padding:0; margin-left:2px;
   display:flex; align-items:center; justify-content:center;
@@ -204,10 +207,10 @@ footer{
 .win-close svg{ width:8px; height:8px; stroke:#7a1f3d; }
 
 .field{
-  width:100%; padding:9px 11px; border-radius:10px;
+  width:100%; padding:11px 14px; border-radius:10px; user-select:text;
   border:1px solid rgba(255,255,255,0.9); background:rgba(255,255,255,0.75);
   font-family:'Quicksand',sans-serif; font-size:13px; color:var(--ink-strong);
-  margin-bottom:8px; resize:none;
+  margin-bottom:12px; resize:none;
 }
 .field:focus{ outline:2px solid var(--glass-blue); outline-offset:1px; }
 .status-msg{ font-size:12px; color:var(--glass-deep); font-weight:600; opacity:0; transition:opacity .3s; }
