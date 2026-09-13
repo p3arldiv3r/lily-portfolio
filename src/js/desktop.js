@@ -1,7 +1,7 @@
-// Homepage "desktop": a pannable background (so a window dragged out of
-// view can still be found), draggable windows, a bubble field, desktop
-// icons that open popup windows, the doodle pad, and the note form. Runs
-// only on pages that include the markup below (the homepage).
+// Homepage "desktop": draggable windows (kept fully on-screen so none can
+// ever become unreachable), a bubble field, desktop icons that open popup
+// windows, the doodle pad, and the note form. Runs only on pages that
+// include the markup below (the homepage).
 (function () {
   'use strict';
 
@@ -11,8 +11,6 @@
     const layer = document.querySelector('.bubble-layer');
     if (!viewport || !canvasEl || !layer) return;
 
-    const CANVAS_W = 2600;
-    const CANVAS_H = 1500;
     const rand = (a, b) => a + Math.random() * (b - a);
     let viewportRect = viewport.getBoundingClientRect();
 
@@ -50,33 +48,17 @@
       b.vx = 0; b.vy = 0;
     };
 
-    // -- pan the desktop (so a window dragged out of view can be found
-    // again) and drag individual windows -- pointer events: mouse, touch, pen --
-    // A window can be dragged above/left of the canvas's own (0,0) origin.
-    // Panning has to be able to reach that space too, not just reveal more
-    // of the canvas below/right of the starting view -- otherwise a window
-    // dragged too far up or left becomes permanently unreachable. MARGIN is
-    // how far in that "negative" direction panning (and window dragging)
-    // is allowed to go.
-    const MARGIN = 500;
-    const pan = { x: 0, y: 0 };
-    const clampPan = () => {
-      const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      const minX = Math.min(0, vw - CANVAS_W);
-      const minY = Math.min(0, vh - CANVAS_H);
-      pan.x = Math.max(minX, Math.min(MARGIN, pan.x));
-      pan.y = Math.max(minY, Math.min(MARGIN, pan.y));
-    };
-    const applyPan = () => {
-      canvasEl.style.transform = 'translate(' + pan.x.toFixed(1) + 'px,' + pan.y.toFixed(1) + 'px)';
-    };
-    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); clampPan(); applyPan(); };
-    clampPan();
-    applyPan();
+    // -- drag individual windows -- pointer events: mouse, touch, pen --
+    // Windows are clamped fully inside the current viewport on every move,
+    // so a window (including the non-closable "welcome" anchor) can never
+    // be dragged somewhere its title bar -- or close button -- is no longer
+    // reachable. No panning: the viewport is the whole reachable area.
+    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); };
     window.addEventListener('resize', refreshRect);
 
     let zCounter = 10;
     let dragState = null;
+    let clickState = null;
 
     // -- click feedback: a little burst of lines wherever you click the open
     // desktop, and popping any bubble caught under the click --
@@ -114,8 +96,7 @@
 
     viewport.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.desktop-window') || e.target.closest('.desktop-icon')) return;
-      dragState = { type: 'pan', startX: e.clientX, startY: e.clientY, startPanX: pan.x, startPanY: pan.y };
-      viewport.classList.add('panning');
+      clickState = { startX: e.clientX, startY: e.clientY };
     });
 
     document.querySelectorAll('.desktop-window .win-bar').forEach((bar) => {
@@ -125,47 +106,49 @@
         const win = bar.closest('.desktop-window');
         zCounter += 1;
         win.style.zIndex = zCounter;
+        const rect = win.getBoundingClientRect();
         dragState = {
-          type: 'window', el: win, startX: e.clientX, startY: e.clientY,
+          el: win, startX: e.clientX, startY: e.clientY,
           startLeft: parseFloat(win.style.left) || 0, startTop: parseFloat(win.style.top) || 0,
+          winW: rect.width, winH: rect.height,
         };
       });
     });
 
     window.addEventListener('pointermove', (e) => {
       if (!dragState) return;
-      if (dragState.type === 'pan') {
-        pan.x = dragState.startPanX + (e.clientX - dragState.startX);
-        pan.y = dragState.startPanY + (e.clientY - dragState.startY);
-        clampPan();
-        applyPan();
-      } else if (dragState.type === 'window') {
-        const dx = e.clientX - dragState.startX;
-        const dy = e.clientY - dragState.startY;
-        const left = Math.max(-MARGIN, Math.min(CANVAS_W + MARGIN, dragState.startLeft + dx));
-        const top = Math.max(-MARGIN, Math.min(CANVAS_H + MARGIN, dragState.startTop + dy));
-        dragState.el.style.left = left + 'px';
-        dragState.el.style.top = top + 'px';
-      }
+      const dx = e.clientX - dragState.startX;
+      const dy = e.clientY - dragState.startY;
+      // Clamp fully inside the current viewport -- never past its edges --
+      // so every window (the non-closable "welcome" one included) always
+      // stays fully reachable: its title bar can always be grabbed again
+      // and its close button, if any, can always be clicked.
+      const maxLeft = Math.max(0, viewportRect.width - dragState.winW);
+      const maxTop = Math.max(0, viewportRect.height - dragState.winH);
+      const left = Math.max(0, Math.min(maxLeft, dragState.startLeft + dx));
+      const top = Math.max(0, Math.min(maxTop, dragState.startTop + dy));
+      dragState.el.style.left = left + 'px';
+      dragState.el.style.top = top + 'px';
     });
     window.addEventListener('pointerup', (e) => {
-      if (dragState && dragState.type === 'pan') {
-        const dx = e.clientX - dragState.startX;
-        const dy = e.clientY - dragState.startY;
+      dragState = null;
+      if (clickState) {
+        const dx = e.clientX - clickState.startX;
+        const dy = e.clientY - clickState.startY;
         if (dx * dx + dy * dy < 36) {
-          // barely moved -- treat it as a click, not a pan, on the open desktop
+          // barely moved -- treat it as a click on the open desktop
           const x = e.clientX - viewportRect.left;
           const y = e.clientY - viewportRect.top;
           spawnClickFx(x, y);
           popBubbleAt(x, y);
         }
+        clickState = null;
       }
-      dragState = null;
-      viewport.classList.remove('panning');
     });
 
-    // -- desktop icons open popup windows; the win-close button closes them --
-    document.querySelectorAll('.icon-link[data-window]').forEach((link) => {
+    // -- desktop icons (and the note/doodle buttons in the welcome window)
+    // open popup windows; the win-close button closes them --
+    document.querySelectorAll('[data-window]').forEach((link) => {
       const open = () => {
         const win = document.querySelector(link.getAttribute('data-window'));
         if (!win) return;

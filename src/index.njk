@@ -30,67 +30,39 @@ title: Lillian Trent — Portfolio
     <div class="sparkle" style="top:200px; left:2050px;"></div>
     <div class="sparkle small" style="top:60px; left:280px;"></div>
 
-    <div class="desktop-icon" style="left:64px; top:60px;">
+    <div class="desktop-icon" style="left:40px; top:24px;">
       <div class="icon-link" data-window="#gallery-window" role="button" tabindex="0">
         <span class="icon-glyph"><img src="/images/icons/art_pixel_icon.png" alt=""></span>
         <span class="icon-label">art</span>
       </div>
     </div>
 
-    <div class="desktop-icon" style="left:64px; top:170px;">
+    <div class="desktop-icon" style="left:40px; top:134px;">
       <div class="icon-link" data-window="#writing-window" role="button" tabindex="0">
         <span class="icon-glyph"><img src="/images/icons/blog_icon.png" alt=""></span>
         <span class="icon-label">blog</span>
       </div>
     </div>
 
-    <div class="desktop-icon" style="left:64px; top:280px;">
+    <div class="desktop-icon" style="left:40px; top:244px;">
       <div class="icon-link" data-window="#experience-window" role="button" tabindex="0">
         <span class="icon-glyph"><img src="/images/icons/work_pixel_icon.png" alt=""></span>
         <span class="icon-label">work</span>
       </div>
     </div>
 
-    <div class="desktop-icon" style="left:64px; top:390px;">
-      <a class="icon-link" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">
-        <span class="icon-glyph"><img src="/images/icons/github_pixel_icon.png" alt=""></span>
-        <span class="icon-label">github</span>
-      </a>
-    </div>
-
-    <div class="desktop-icon" style="left:64px; top:500px;">
+    <div class="desktop-icon" style="left:40px; top:354px;">
       <a class="icon-link" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">
         <span class="icon-glyph"><img src="/images/icons/linkedin_pixel_icon.png" alt="" style="transform:scale(1.15);"></span>
         <span class="icon-label">linkedin</span>
       </a>
     </div>
 
-    <!-- second icon column -- placeholders until real pixel art is dropped in;
-         reuses the same two top positions as the first column so this never
-         adds height to the page, only width -->
-    <div class="desktop-icon" style="left:174px; top:60px;">
-      <div class="icon-link" data-window="#note-window" role="button" tabindex="0">
-        <span class="icon-glyph">
-          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="10" width="34" height="24" rx="3" fill="#fdf6e3" stroke="#0c3a4d" stroke-width="2"/>
-            <path d="M6 12 L22 26 L38 12" fill="none" stroke="#3fa7dd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        <span class="icon-label">note</span>
-      </div>
-    </div>
-
-    <div class="desktop-icon" style="left:174px; top:170px;">
-      <div class="icon-link" data-window="#doodle-window" role="button" tabindex="0">
-        <span class="icon-glyph">
-          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="6" width="28" height="34" rx="2" fill="#ffffff" stroke="#0c3a4d" stroke-width="2"/>
-            <path d="M13 16 Q18 11 22 16 T31 16" fill="none" stroke="#e0679c" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M13 25 Q18 20 22 25 T31 25" fill="none" stroke="#7fbf3d" stroke-width="2.2" stroke-linecap="round"/>
-          </svg>
-        </span>
-        <span class="icon-label">doodle</span>
-      </div>
+    <div class="desktop-icon" style="left:40px; top:464px;">
+      <a class="icon-link" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">
+        <span class="icon-glyph"><img src="/images/icons/github_pixel_icon.png" alt=""></span>
+        <span class="icon-label">github</span>
+      </a>
     </div>
 
     <div class="desktop-window popup" id="gallery-window" style="left:930px; top:50px; width:380px;">
@@ -173,9 +145,8 @@ title: Lillian Trent — Portfolio
         <h1 style="font-family:'Baloo 2', sans-serif; font-size:32px; font-weight:700; margin:0 0 14px; background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;">hi, i'm lily!</h1>
         <p style="margin:0 0 20px; color:var(--ink-soft); font-size:14px; line-height:1.6;">computer science student at georgia tech, developer, digital artist, and then some!</p>
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
-          <a class="glass-btn" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
-          <a class="glass-btn" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
-          <a class="glass-btn" href="/gallery/">see my art</a>
+          <button type="button" class="glass-btn" data-window="#note-window">send me a note</button>
+          <button type="button" class="glass-btn" data-window="#doodle-window">send me a doodle</button>
         </div>
       </div>
     </div>
@@ -216,7 +187,7 @@ title: Lillian Trent — Portfolio
     </div>
 
   </div>
-  <div class="hint">click and drag to look around! drag a window's title bar to move it</div>
+  <div class="hint">drag a window's title bar to move it</div>
 </div>
 
 <script src="/js/desktop.js" defer></script>
