@@ -36,7 +36,7 @@ collections:
             widget: "list"
             summary: "{{fields.title}}"
             fields:
-              - { label: "Image (square canvases work best)", name: "image", widget: "image", media_folder: "src/images/gallery", public_folder: "/images/gallery" }
+              - { label: "Image (square canvases work best)", name: "image", widget: "image", media_folder: "/src/images/gallery", public_folder: "/images/gallery" }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Alt text (for screen readers)", name: "alt", widget: "string", required: false, hint: "Describe what's in the image. Falls back to the title if left blank." }
               - { label: "Caption", name: "caption", widget: "string", required: false, hint: "One line, shown under the piece." }
@@ -53,7 +53,7 @@ collections:
             widget: "list"
             summary: "{{fields.display}} — {{fields.caption}}"
             fields:
-              - { label: "Image", name: "image", widget: "image", media_folder: "src/images/doodles", public_folder: "/images/doodles" }
+              - { label: "Image", name: "image", widget: "image", media_folder: "/src/images/doodles", public_folder: "/images/doodles" }
               - label: "Display as"
                 name: "display"
                 widget: "select"
