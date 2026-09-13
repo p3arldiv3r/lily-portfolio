@@ -65,6 +65,34 @@ title: Lillian Trent — Portfolio
       </a>
     </div>
 
+    <!-- second icon column -- placeholders until real pixel art is dropped in;
+         reuses the same two top positions as the first column so this never
+         adds height to the page, only width -->
+    <div class="desktop-icon" style="left:174px; top:60px;">
+      <div class="icon-link" data-window="#note-window" role="button" tabindex="0">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="10" width="34" height="24" rx="3" fill="#fdf6e3" stroke="#0c3a4d" stroke-width="2"/>
+            <path d="M6 12 L22 26 L38 12" fill="none" stroke="#3fa7dd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="icon-label">note</span>
+      </div>
+    </div>
+
+    <div class="desktop-icon" style="left:174px; top:170px;">
+      <div class="icon-link" data-window="#doodle-window" role="button" tabindex="0">
+        <span class="icon-glyph">
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="6" width="28" height="34" rx="2" fill="#ffffff" stroke="#0c3a4d" stroke-width="2"/>
+            <path d="M13 16 Q18 11 22 16 T31 16" fill="none" stroke="#e0679c" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M13 25 Q18 20 22 25 T31 25" fill="none" stroke="#7fbf3d" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="icon-label">doodle</span>
+      </div>
+    </div>
+
     <div class="desktop-window popup" id="gallery-window" style="left:930px; top:50px; width:380px;">
       <div class="win-bar">
         <span>gallery.pic</span>
@@ -139,7 +167,7 @@ title: Lillian Trent — Portfolio
       </div>
     </div>
 
-    <div class="desktop-window" style="left:560px; top:40px; width:400px;">
+    <div class="desktop-window" style="left:510px; top:210px; width:400px;">
       <div class="win-bar"><span>welcome.txt</span><div class="dots"><i></i><i></i></div></div>
       <div class="win-body">
         <h1 style="font-family:'Baloo 2', sans-serif; font-size:32px; font-weight:700; margin:0 0 14px; background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;">hi, i'm lily!</h1>
@@ -152,8 +180,11 @@ title: Lillian Trent — Portfolio
       </div>
     </div>
 
-    <div class="desktop-window" style="left:340px; top:380px; width:330px;">
-      <div class="win-bar"><span>new_message.txt</span><div class="dots"><i></i><i></i></div></div>
+    <div class="desktop-window popup" id="note-window" style="left:250px; top:440px; width:330px;">
+      <div class="win-bar">
+        <span>new_message.txt</span>
+        <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
+      </div>
       <div class="win-body">
         <form class="note-form" name="note-to-lily" method="POST" data-netlify="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="note-to-lily" />
@@ -169,8 +200,11 @@ title: Lillian Trent — Portfolio
       </div>
     </div>
 
-    <div class="desktop-window" style="left:820px; top:320px; width:380px;">
-      <div class="win-bar"><span>doodle.pad</span><div class="dots"><i></i><i></i></div></div>
+    <div class="desktop-window popup" id="doodle-window" style="left:680px; top:440px; width:380px;">
+      <div class="win-bar">
+        <span>doodle.pad</span>
+        <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
+      </div>
       <div class="win-body">
         <p style="margin:0 0 14px; font-size:13px; color:var(--ink-soft);">draw me something!.</p>
         <canvas class="doodle-canvas" width="336" height="150"></canvas>
