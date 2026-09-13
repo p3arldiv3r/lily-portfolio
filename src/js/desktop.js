@@ -1,20 +1,22 @@
-// Homepage "desktop": pannable background, draggable windows, bubble field,
-// desktop icons that open popup windows, the doodle pad, and the note form.
-// Runs only on pages that include the markup below (the homepage).
+// Homepage "desktop": a fixed (non-scrolling, non-draggable) layout with a
+// bubble field, desktop icons that open popup windows, the doodle pad, and
+// the note form. Runs only on pages that include the markup below (the
+// homepage).
 (function () {
   'use strict';
 
   function init() {
     const viewport = document.querySelector('.desktop-viewport');
-    const canvasEl = document.querySelector('.desktop-canvas');
     const layer = document.querySelector('.bubble-layer');
-    if (!viewport || !canvasEl || !layer) return;
+    if (!viewport || !layer) return;
 
-    const CANVAS_W = 2600;
-    const CANVAS_H = 1500;
     const rand = (a, b) => a + Math.random() * (b - a);
 
-    // -- build the bubble field --
+    // -- build the bubble field, bounded to the fixed viewport --
+    let viewportRect = viewport.getBoundingClientRect();
+    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); };
+    window.addEventListener('resize', refreshRect);
+
     const BUBBLE_SIZES = [130, 45, 90, 30, 70, 110, 50, 25, 85, 60, 35, 75, 55, 95, 28, 65, 40, 105, 22, 58, 100, 38, 72, 48, 82, 30];
     BUBBLE_SIZES.forEach((size) => {
       const d = document.createElement('div');
@@ -27,8 +29,8 @@
       const r = parseFloat(el.style.width) / 2;
       return {
         el, r,
-        x: rand(r, CANVAS_W - r),
-        y: rand(-CANVAS_H, CANVAS_H),
+        x: rand(r, Math.max(r + 1, viewportRect.width - r)),
+        y: rand(-viewportRect.height, viewportRect.height),
         vx: 0, vy: 0,
         riseSpeed: rand(14, 28) * (60 / (r * 2)),
         wobblePhase: rand(0, Math.PI * 2),
@@ -36,67 +38,12 @@
       };
     });
     const respawn = (b) => {
-      b.y = CANVAS_H + b.r + rand(0, 150);
-      b.x = rand(b.r, CANVAS_W - b.r);
+      b.y = viewportRect.height + b.r + rand(0, 150);
+      b.x = rand(b.r, Math.max(b.r + 1, viewportRect.width - b.r));
       b.vx = 0; b.vy = 0;
     };
 
-    // -- pan the desktop + drag individual windows (pointer events: mouse, touch, pen) --
-    let viewportRect = viewport.getBoundingClientRect();
-    const pan = { x: 0, y: 0 };
-    const clampPan = () => {
-      const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      const minX = Math.min(0, vw - CANVAS_W);
-      const minY = Math.min(0, vh - CANVAS_H);
-      pan.x = Math.max(minX, Math.min(0, pan.x));
-      pan.y = Math.max(minY, Math.min(0, pan.y));
-    };
-    const applyPan = () => {
-      canvasEl.style.transform = 'translate(' + pan.x.toFixed(1) + 'px,' + pan.y.toFixed(1) + 'px)';
-    };
-    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); clampPan(); applyPan(); };
-    clampPan();
-    applyPan();
-    window.addEventListener('resize', refreshRect);
-
     let zCounter = 10;
-    let dragState = null;
-
-    viewport.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('.desktop-window') || e.target.closest('.desktop-icon')) return;
-      dragState = { type: 'pan', startX: e.clientX, startY: e.clientY, startPanX: pan.x, startPanY: pan.y };
-      viewport.classList.add('panning');
-    });
-
-    document.querySelectorAll('.desktop-window .win-bar').forEach((bar) => {
-      bar.addEventListener('pointerdown', (e) => {
-        if (e.target.closest('.win-close')) return;
-        e.stopPropagation();
-        const win = bar.closest('.desktop-window');
-        zCounter += 1;
-        win.style.zIndex = zCounter;
-        dragState = {
-          type: 'window', el: win, startX: e.clientX, startY: e.clientY,
-          startLeft: parseFloat(win.style.left) || 0, startTop: parseFloat(win.style.top) || 0,
-        };
-      });
-    });
-
-    window.addEventListener('pointermove', (e) => {
-      if (!dragState) return;
-      if (dragState.type === 'pan') {
-        pan.x = dragState.startPanX + (e.clientX - dragState.startX);
-        pan.y = dragState.startPanY + (e.clientY - dragState.startY);
-        clampPan();
-        applyPan();
-      } else if (dragState.type === 'window') {
-        const dx = e.clientX - dragState.startX;
-        const dy = e.clientY - dragState.startY;
-        dragState.el.style.left = (dragState.startLeft + dx) + 'px';
-        dragState.el.style.top = (dragState.startTop + dy) + 'px';
-      }
-    });
-    window.addEventListener('pointerup', () => { dragState = null; viewport.classList.remove('panning'); });
 
     // -- desktop icons open popup windows; the win-close button closes them --
     document.querySelectorAll('.icon-link[data-window]').forEach((link) => {
@@ -165,8 +112,9 @@
       const dt = Math.min(0.05, (t - last) / 1000);
       last = t;
 
-      const mx = mouse.clientX - viewportRect.left - pan.x;
-      const my = mouse.clientY - viewportRect.top - pan.y;
+      const mx = mouse.clientX - viewportRect.left;
+      const my = mouse.clientY - viewportRect.top;
+      const w = viewportRect.width;
 
       bubbles.forEach((b) => {
         b.wobblePhase += b.wobbleFreq * dt;
@@ -189,7 +137,7 @@
         b.y += (b.vy - b.riseSpeed) * dt;
 
         if (b.x < b.r) { b.x = b.r; b.vx = Math.abs(b.vx) * 0.5; }
-        if (b.x > CANVAS_W - b.r) { b.x = CANVAS_W - b.r; b.vx = -Math.abs(b.vx) * 0.5; }
+        if (b.x > w - b.r) { b.x = w - b.r; b.vx = -Math.abs(b.vx) * 0.5; }
 
         if (b.y < -b.r * 2.2) respawn(b);
 
