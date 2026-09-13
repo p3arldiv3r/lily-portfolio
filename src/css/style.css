@@ -230,6 +230,7 @@ footer{
 .icon-link:hover{ background:rgba(255,255,255,0.35); }
 .icon-link:focus-visible{ outline:2px solid var(--glass-blue); outline-offset:2px; }
 .icon-glyph{ width:44px; height:44px; filter:drop-shadow(0 3px 4px rgba(15,93,134,0.25)); }
+.icon-glyph img{ width:100%; height:100%; object-fit:contain; display:block; }
 .icon-label{
   font-size:11.5px; font-weight:700; color:var(--ink-strong);
   background:rgba(255,255,255,0.55); padding:2px 9px; border-radius:6px; white-space:nowrap;
