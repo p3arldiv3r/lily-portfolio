@@ -37,7 +37,9 @@
 
 {{ content | safe }}
 
+{%- if page.url != "/" %}
 <footer>lillian b. trent — made with care</footer>
+{%- endif %}
 
 </body>
 </html>
