@@ -2,7 +2,7 @@ backend:
   name: github
   repo: p3arldiv3r/lily-portfolio
   branch: main
-  base_url: https://lilys-portfolio.lbtgt.workers.dev
+  base_url: https://lilytrent.pages.dev
   auth_endpoint: /api/auth
 
 media_folder: "src/images"
