@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "src/images"
+public_folder: "/images"
+
+publish_mode: simple
+
+collections:
+  - name: "posts"
+    label: "Writing"
+    folder: "src/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", hint: "One or two sentences shown on the writing list." }
+      - { label: "Body", name: "body", widget: "markdown" }

@@ -1,0 +1,10 @@
+---
+layout: base.njk
+---
+<article class="post-article">
+  <h1>{{ title }}</h1>
+  <p class="meta">{{ date | date("%B %d, %Y") }}</p>
+  <div class="post-body">
+    {{ content | safe }}
+  </div>
+</article>

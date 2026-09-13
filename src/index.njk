@@ -1,0 +1,49 @@
+---
+layout: base.njk
+title: Lillian Trent — Portfolio
+---
+<div class="bubble" style="width:120px;height:120px;top:60px;left:6%;"></div>
+<div class="bubble" style="width:60px;height:60px;top:220px;left:18%;"></div>
+<div class="bubble" style="width:90px;height:90px;top:40px;right:10%;"></div>
+<div class="bubble" style="width:40px;height:40px;top:180px;right:22%;"></div>
+<div class="sparkle" style="top:90px;left:26%;"></div>
+<div class="sparkle small" style="top:150px;left:34%;"></div>
+<div class="sparkle small" style="top:110px;right:28%;"></div>
+<div class="sparkle" style="top:250px;right:16%;"></div>
+
+<header class="page-head" style="padding-top:100px; padding-bottom:20px;">
+  <h1 style="font-size:clamp(40px, 7vw, 76px);">hi, i'm lily</h1>
+  <p style="font-size:19px; max-width:520px;">computer scientist, digital artist, and writer building tools and worlds where technology feels a little more human.</p>
+  <div class="cta-row" style="margin-top:24px;">
+    <a class="glass-btn" href="/gallery/">see my art</a>
+    <a class="glass-btn" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
+    <a class="glass-btn" href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
+  </div>
+</header>
+
+<section id="writing">
+  <div class="section-heading">latest writing</div>
+  <div class="section-sub">short fiction, worldbuilding notes, and essays.</div>
+  <div class="writing-list">
+  {%- for post in collections.posts | reverse | head(3) %}
+    <div class="write-card">
+      <div class="win-bar"><span>{{ post.data.title }}.md</span><div class="dots"><i></i><i></i></div></div>
+      <div class="write-body">
+        <h3><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+        <p class="meta">{{ post.data.date | date("%B %d, %Y") }}</p>
+        <p>{{ post.data.excerpt }}</p>
+      </div>
+    </div>
+  {%- endfor %}
+  </div>
+  <div style="text-align:center; margin-top:28px;">
+    <a class="glass-btn" href="/writing/">read more writing</a>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-heading">about</div>
+  <div class="section-sub" style="max-width:640px;">
+    computer science student at georgia tech, working at the intersection of ml, hci, and healthcare accessibility. founder of fiat scientia. when i'm not building software, i'm drawing, writing, or making games.
+  </div>
+</section>

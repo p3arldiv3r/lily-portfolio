@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title or "Lillian Trent" }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">lily.trent</a>
+  <div class="nav-links">
+    <a href="/gallery/">art</a>
+    <a href="/writing/">writing</a>
+    <a href="/#about">about</a>
+    <a href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">linkedin</a>
+    <a href="https://github.com/p3arldiv3r" target="_blank" rel="noopener">github</a>
+  </div>
+</nav>
+
+{{ content | safe }}
+
+<footer>lillian b. trent — made with care</footer>
+
+</body>
+</html>
