@@ -5,7 +5,24 @@ title: Lillian Trent — Portfolio
 <div class="desktop-viewport">
   <div class="desktop-canvas">
 
+    {%- for d in doodles.items %}
+    {%- if d.display == "background" %}
+    <div class="doodle-bg" style="left:{{ d.left }}px; top:{{ d.top }}px;">
+      <img src="{{ d.image }}" alt="">
+    </div>
+    {%- endif %}
+    {%- endfor %}
+
     <div class="bubble-layer"></div>
+
+    {%- for d in doodles.items %}
+    {%- if d.display == "sticky" %}
+    <div class="doodle-sticky" style="left:{{ d.left }}px; top:{{ d.top }}px; transform:rotate({{ [-4,3,-2,5][loop.index0 % 4] }}deg);">
+      <img src="{{ d.image }}" alt="a doodle from a visitor">
+      {%- if d.caption %}<div class="doodle-caption">{{ d.caption }}</div>{%- endif %}
+    </div>
+    {%- endif %}
+    {%- endfor %}
 
     <div class="sparkle" style="top:70px; left:520px;"></div>
     <div class="sparkle small" style="top:340px; left:900px;"></div>
@@ -165,7 +182,7 @@ title: Lillian Trent — Portfolio
     <div class="desktop-window" style="left:560px; top:40px; width:400px;">
       <div class="win-bar"><span>welcome.txt</span><div class="dots"><i></i><i></i></div></div>
       <div class="win-body">
-        <h1 style="font-family:'Baloo 2', sans-serif; font-size:32px; font-weight:700; margin:0 0 14px; background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;">hi, i'm lily</h1>
+        <h1 style="font-family:'Baloo 2', sans-serif; font-size:32px; font-weight:700; margin:0 0 14px; background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;">hi, i'm lily!</h1>
         <p style="margin:0 0 20px; color:var(--ink-soft); font-size:14px; line-height:1.6;">computer scientist, digital artist, and writer building tools and worlds where technology feels a little more human.</p>
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
           <a class="glass-btn" href="/gallery/">see my art</a>
@@ -183,7 +200,7 @@ title: Lillian Trent — Portfolio
           <p style="position:absolute; left:-9999px;"><label>don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
           <p style="margin:0 0 14px; font-size:13px; color:var(--ink-soft);">send me a note — it comes straight to my inbox.</p>
           <input class="field" type="text" name="name" placeholder="your name (optional)">
-          <textarea class="field" name="message" rows="3" placeholder="say hi, ask a question, whatever..." required></textarea>
+          <textarea class="field" name="message" rows="3" placeholder="send me a message!" required></textarea>
           <div style="display:flex; align-items:center; gap:12px; margin-top:14px;">
             <button type="submit" class="glass-btn">send</button>
             <span class="status-msg note-status">sent — thanks, i'll read it soon!</span>
@@ -195,7 +212,7 @@ title: Lillian Trent — Portfolio
     <div class="desktop-window" style="left:820px; top:320px; width:380px;">
       <div class="win-bar"><span>doodle.pad</span><div class="dots"><i></i><i></i></div></div>
       <div class="win-body">
-        <p style="margin:0 0 14px; font-size:13px; color:var(--ink-soft);">draw me something — strawpage-style.</p>
+        <p style="margin:0 0 14px; font-size:13px; color:var(--ink-soft);">draw me something!.</p>
         <canvas class="doodle-canvas" width="336" height="150"></canvas>
         <div style="display:flex; align-items:center; gap:12px; margin-top:14px;">
           <button type="button" class="glass-btn doodle-clear">clear</button>

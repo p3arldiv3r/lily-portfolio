@@ -155,7 +155,12 @@ section{ position:relative; padding:60px 40px 90px; max-width:1100px; margin:0 a
 .write-card p{ font-size:14px; color:var(--ink-soft); margin:0; line-height:1.6; }
 
 /* single post */
-.post-article{ max-width:680px; margin:0 auto; padding:0 40px 100px; }
+.post-article{ max-width:680px; margin:0 auto; padding:50px 40px 100px; }
+.post-back{
+  display:inline-block; margin:0 0 18px; font-size:13px; font-weight:700;
+  color:var(--glass-blue); text-decoration:none;
+}
+.post-back:hover{ color:var(--glass-deep); }
 .post-article h1{
   font-family:'Baloo 2', sans-serif;
   font-size:clamp(28px, 5vw, 40px);
@@ -234,6 +239,32 @@ footer{
   position:absolute; z-index:40; left:50%; bottom:14px; transform:translateX(-50%);
   font-size:12px; color:var(--ink-soft); background:rgba(255,255,255,0.6);
   padding:6px 14px; border-radius:999px; white-space:nowrap; pointer-events:none;
+}
+
+/* visitor doodles: approved via the CMS, never shown until then */
+.doodle-bg{
+  position:absolute; width:170px; opacity:0.16; pointer-events:none;
+  filter:grayscale(0.15); z-index:0;
+}
+.doodle-bg img{ width:100%; display:block; border-radius:8px; }
+
+.doodle-sticky{
+  position:absolute; width:130px; z-index:8;
+  background:#fffdf3; padding:8px 8px 26px;
+  box-shadow:0 10px 20px rgba(20,90,130,0.22), 0 2px 5px rgba(0,0,0,0.18);
+  border-radius:2px;
+}
+.doodle-sticky::before{
+  content:""; position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+  width:14px; height:14px; border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #ff9a9a, #d64545);
+  box-shadow:0 2px 3px rgba(0,0,0,0.3);
+}
+.doodle-sticky img{ width:100%; display:block; border:1px solid rgba(12,58,77,0.1); }
+.doodle-sticky .doodle-caption{
+  position:absolute; left:8px; right:8px; bottom:6px;
+  font-size:10.5px; color:#6b5d3f; text-align:center;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
 
 .gallery-preview{ background-size:cover; transition:background 0.2s ease; }

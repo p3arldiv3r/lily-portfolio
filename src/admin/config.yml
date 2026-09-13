@@ -20,3 +20,27 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Excerpt", name: "excerpt", widget: "text", hint: "One or two sentences shown on the writing list." }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "doodles"
+    label: "Doodles"
+    files:
+      - file: "src/_data/doodles.json"
+        label: "Approved doodles"
+        name: "doodles"
+        fields:
+          - label: "Approved doodles"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.display}} — {{fields.caption}}"
+            fields:
+              - { label: "Image", name: "image", widget: "image", media_folder: "src/images/doodles", public_folder: "/images/doodles" }
+              - label: "Display as"
+                name: "display"
+                widget: "select"
+                default: "sticky"
+                options:
+                  - { label: "Sticky note", value: "sticky" }
+                  - { label: "Low-opacity background", value: "background" }
+              - { label: "Left (px from the desktop's left edge)", name: "left", widget: "number", value_type: "int", default: 200 }
+              - { label: "Top (px from the desktop's top edge)", name: "top", widget: "number", value_type: "int", default: 200 }
+              - { label: "Caption (shown on sticky notes only)", name: "caption", widget: "string", required: false }
