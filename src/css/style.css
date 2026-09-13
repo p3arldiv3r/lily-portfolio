@@ -191,6 +191,7 @@ footer{
   overflow:hidden;
   z-index:10;
 }
+.desktop-window .win-bar{ cursor:grab; user-select:none; touch-action:none; }
 .desktop-window .win-body{ padding:20px 22px 24px; }
 .desktop-window.popup{ display:none; }
 .desktop-window.popup.is-open{ display:block; }

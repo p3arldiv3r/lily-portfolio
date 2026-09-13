@@ -45,6 +45,30 @@
 
     let zCounter = 10;
 
+    // -- drag windows by their title bar to reposition them (the desktop
+    // itself no longer pans/scrolls, but the windows on it still move) --
+    let dragState = null;
+    document.querySelectorAll('.desktop-window .win-bar').forEach((bar) => {
+      bar.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.win-close')) return;
+        const win = bar.closest('.desktop-window');
+        zCounter += 1;
+        win.style.zIndex = zCounter;
+        dragState = {
+          el: win, startX: e.clientX, startY: e.clientY,
+          startLeft: parseFloat(win.style.left) || 0, startTop: parseFloat(win.style.top) || 0,
+        };
+      });
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!dragState) return;
+      const dx = e.clientX - dragState.startX;
+      const dy = e.clientY - dragState.startY;
+      dragState.el.style.left = (dragState.startLeft + dx) + 'px';
+      dragState.el.style.top = (dragState.startTop + dy) + 'px';
+    });
+    window.addEventListener('pointerup', () => { dragState = null; });
+
     // -- desktop icons open popup windows; the win-close button closes them --
     document.querySelectorAll('.icon-link[data-window]').forEach((link) => {
       const open = () => {
