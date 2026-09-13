@@ -219,6 +219,7 @@ footer{
 .desktop-window.popup{ display:none; }
 .desktop-window.popup.is-open{ display:block; }
 .desktop-window .glass-btn:not(.icon-btn){ padding:9px 20px; font-size:13px; }
+.open-btn{ font-weight:500; color:var(--ink-soft); }
 .win-close{
   width:22px; height:22px; border-radius:50%; padding:0; margin-left:6px;
   display:flex; align-items:center; justify-content:center;
