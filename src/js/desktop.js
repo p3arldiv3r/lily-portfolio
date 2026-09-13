@@ -78,6 +78,40 @@
     let zCounter = 10;
     let dragState = null;
 
+    // -- click feedback: a little burst of lines wherever you click the open
+    // desktop, and popping any bubble caught under the click --
+    const spawnClickFx = (x, y) => {
+      const fx = document.createElement('div');
+      fx.className = 'click-fx';
+      fx.style.left = x + 'px';
+      fx.style.top = y + 'px';
+      const LINES = 8;
+      for (let i = 0; i < LINES; i++) {
+        const spoke = document.createElement('i');
+        spoke.style.transform = 'rotate(' + (i * (360 / LINES)) + 'deg)';
+        const mark = document.createElement('b');
+        spoke.appendChild(mark);
+        fx.appendChild(spoke);
+      }
+      viewport.appendChild(fx);
+      setTimeout(() => fx.remove(), 750);
+    };
+    const popBubbleAt = (x, y) => {
+      for (let i = bubbles.length - 1; i >= 0; i--) {
+        const b = bubbles[i];
+        const dx = x - b.x, dy = y - b.y;
+        if (dx * dx + dy * dy <= b.r * b.r) {
+          b.el.classList.add('popping');
+          setTimeout(() => {
+            respawn(b);
+            b.el.classList.remove('popping');
+          }, 220);
+          return true;
+        }
+      }
+      return false;
+    };
+
     viewport.addEventListener('pointerdown', (e) => {
       if (e.target.closest('.desktop-window') || e.target.closest('.desktop-icon')) return;
       dragState = { type: 'pan', startX: e.clientX, startY: e.clientY, startPanX: pan.x, startPanY: pan.y };
@@ -114,7 +148,21 @@
         dragState.el.style.top = top + 'px';
       }
     });
-    window.addEventListener('pointerup', () => { dragState = null; viewport.classList.remove('panning'); });
+    window.addEventListener('pointerup', (e) => {
+      if (dragState && dragState.type === 'pan') {
+        const dx = e.clientX - dragState.startX;
+        const dy = e.clientY - dragState.startY;
+        if (dx * dx + dy * dy < 36) {
+          // barely moved -- treat it as a click, not a pan, on the open desktop
+          const x = e.clientX - viewportRect.left;
+          const y = e.clientY - viewportRect.top;
+          spawnClickFx(x, y);
+          popBubbleAt(x, y);
+        }
+      }
+      dragState = null;
+      viewport.classList.remove('panning');
+    });
 
     // -- desktop icons open popup windows; the win-close button closes them --
     document.querySelectorAll('.icon-link[data-window]').forEach((link) => {

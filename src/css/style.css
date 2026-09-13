@@ -24,6 +24,21 @@ body{
   box-shadow: inset 0 0 12px rgba(255,255,255,0.6), 0 8px 20px rgba(20,90,130,0.15);
   pointer-events:none;
   will-change:transform;
+  opacity:1;
+}
+.bubble.popping{ opacity:0; transition:opacity 200ms ease-out, filter 200ms ease-out; filter:brightness(1.4); }
+
+.click-fx{ position:absolute; width:0; height:0; pointer-events:none; z-index:50; }
+.click-fx i{ position:absolute; top:0; left:0; display:block; }
+.click-fx i b{
+  position:absolute; left:-1.5px; top:5px; width:3px; height:10px;
+  background:var(--glass-deep); border-radius:2px; display:block;
+  transform-origin:1.5px 0;
+  animation: click-fx-burst 650ms ease-out forwards;
+}
+@keyframes click-fx-burst{
+  0%{ transform:translateY(0) scaleY(1); opacity:0.9; }
+  100%{ transform:translateY(24px) scaleY(0.35); opacity:0; }
 }
 .sparkle{ position:absolute; width:20px; height:20px; pointer-events:none; opacity:0.85; animation: twinkle 3.6s ease-in-out infinite; }
 .sparkle::before{
