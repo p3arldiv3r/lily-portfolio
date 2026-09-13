@@ -186,8 +186,11 @@
       const dt = Math.min(0.05, (t - last) / 1000);
       last = t;
 
-      const mx = mouse.clientX - viewportRect.left - pan.x;
-      const my = mouse.clientY - viewportRect.top - pan.y;
+      // Bubbles live directly in .desktop-viewport now (not inside the
+      // pannable .desktop-canvas), so their coordinates are plain
+      // viewport-local -- no pan offset to subtract here anymore.
+      const mx = mouse.clientX - viewportRect.left;
+      const my = mouse.clientY - viewportRect.top;
 
       bubbles.forEach((b) => {
         b.wobblePhase += b.wobbleFreq * dt;

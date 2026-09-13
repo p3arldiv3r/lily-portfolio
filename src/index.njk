@@ -3,6 +3,7 @@ layout: base.njk
 title: Lillian Trent — Portfolio
 ---
 <div class="desktop-viewport">
+  <div class="bubble-layer"></div>
   <div class="desktop-canvas">
 
     {%- for d in doodles.items %}
@@ -12,8 +13,6 @@ title: Lillian Trent — Portfolio
     </div>
     {%- endif %}
     {%- endfor %}
-
-    <div class="bubble-layer"></div>
 
     {%- for d in doodles.items %}
     {%- if d.display == "sticky" %}
