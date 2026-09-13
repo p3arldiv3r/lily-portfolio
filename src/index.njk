@@ -116,7 +116,8 @@ title: Lillian Trent — Portfolio
         <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
       </div>
       <div class="win-body">
-        <div class="gallery-preview" style="height:170px; border-radius:10px; border:1px solid rgba(255,255,255,0.9);"></div>
+        {%- if gallery.items.length %}
+        <div class="gallery-preview"></div>
         <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px;">
           <button type="button" class="glass-btn icon-btn gallery-prev" aria-label="previous">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
@@ -130,13 +131,13 @@ title: Lillian Trent — Portfolio
           </button>
         </div>
         <div class="gallery-thumbs" style="display:flex; gap:6px; overflow-x:auto; margin-top:10px; padding-bottom:2px;">
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#9fe3ff,#4aa8d8);"></div>
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#c9f6a8,#7fbf3d);"></div>
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#ffe3ac,#f0a54e);"></div>
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#d9c8ff,#8f6fe0);"></div>
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#ffc7dd,#e0679c);"></div>
-          <div class="gallery-thumb" style="background:linear-gradient(160deg,#b9f3ea,#3fa7dd);"></div>
+          {%- for item in gallery.items %}
+          <div class="gallery-thumb" data-image="{{ item.image }}" data-title="{{ item.title }}" data-caption="{{ item.caption or '' }}" style="background-image:url('{{ item.image }}');"></div>
+          {%- endfor %}
         </div>
+        {%- else %}
+        <p style="text-align:center; color:var(--ink-soft); font-size:13px; margin:20px 0;">nothing approved yet — check back soon.</p>
+        {%- endif %}
         <div style="text-align:center; margin-top:10px;">
           <a class="popup-link" href="/gallery/">see the full gallery →</a>
         </div>

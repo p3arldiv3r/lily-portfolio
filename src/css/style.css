@@ -267,11 +267,15 @@ footer{
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
 
-.gallery-preview{ background-size:cover; transition:background 0.2s ease; }
+.gallery-preview{
+  width:100%; aspect-ratio:1/1; border-radius:10px; border:1px solid rgba(255,255,255,0.9);
+  background-size:cover; background-position:center; transition:background-image 0.2s ease;
+}
 .gallery-thumbs{ scrollbar-width:thin; }
 .gallery-thumb{
   width:44px; height:44px; flex:none; border-radius:6px; cursor:pointer;
   border:2px solid transparent; opacity:0.75;
+  background-size:cover; background-position:center;
 }
 .gallery-thumb.active{ border-color:var(--glass-deep); opacity:1; }
 .icon-btn{ display:flex; align-items:center; justify-content:center; width:30px; height:30px; padding:0; flex:none; }

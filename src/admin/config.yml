@@ -21,6 +21,22 @@ collections:
       - { label: "Excerpt", name: "excerpt", widget: "text", hint: "One or two sentences shown on the writing list." }
       - { label: "Body", name: "body", widget: "markdown" }
 
+  - name: "gallery"
+    label: "Gallery"
+    files:
+      - file: "src/_data/gallery.json"
+        label: "Art pieces"
+        name: "gallery"
+        fields:
+          - label: "Art pieces"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Image (square canvases work best)", name: "image", widget: "image", media_folder: "src/images/gallery", public_folder: "/images/gallery" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Caption", name: "caption", widget: "string", required: false, hint: "One line, shown under the piece." }
+
   - name: "doodles"
     label: "Doodles"
     files:

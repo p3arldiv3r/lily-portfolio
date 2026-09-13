@@ -131,29 +131,29 @@
       });
     });
 
-    // -- gallery popup: a tiny photo viewer over the gallery's placeholder tiles --
-    const GALLERY_ITEMS = [
-      { name: 'character_01.png', caption: 'character study — untitled', gradient: 'linear-gradient(160deg,#9fe3ff,#4aa8d8)' },
-      { name: 'melt_bg_02.png', caption: 'melt, background art', gradient: 'linear-gradient(160deg,#c9f6a8,#7fbf3d)' },
-      { name: 'moodboard.png', caption: 'frutiger aero moodboard', gradient: 'linear-gradient(160deg,#ffe3ac,#f0a54e)' },
-      { name: 'sprite_wip.png', caption: 'visual novel sprite wip', gradient: 'linear-gradient(160deg,#d9c8ff,#8f6fe0)' },
-      { name: 'color_study.png', caption: 'color study, warm palette', gradient: 'linear-gradient(160deg,#ffc7dd,#e0679c)' },
-      { name: 'ui_panel.png', caption: 'ui concept, glassy panel', gradient: 'linear-gradient(160deg,#b9f3ea,#3fa7dd)' },
-    ];
+    // -- gallery popup: a tiny photo viewer over the approved gallery pieces
+    // (each thumbnail carries its own image/title/caption as data attributes,
+    // set from the CMS-managed gallery collection -- nothing hardcoded here) --
     let galleryIndex = 0;
     const galleryPreview = document.querySelector('.gallery-preview');
     const galleryFilename = document.querySelector('.gallery-filename');
     const galleryCaption = document.querySelector('.gallery-caption');
     const galleryThumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
     const renderGallery = () => {
-      const item = GALLERY_ITEMS[galleryIndex];
-      if (galleryPreview) galleryPreview.style.background = item.gradient;
-      if (galleryFilename) galleryFilename.textContent = item.name;
-      if (galleryCaption) galleryCaption.textContent = item.caption;
+      const thumb = galleryThumbs[galleryIndex];
+      if (!thumb) return;
+      const { image, title, caption } = thumb.dataset;
+      if (galleryPreview) galleryPreview.style.backgroundImage = image ? `url('${image}')` : 'none';
+      if (galleryFilename) galleryFilename.textContent = title || '';
+      if (galleryCaption) galleryCaption.textContent = caption || '';
       galleryThumbs.forEach((t, i) => t.classList.toggle('active', i === galleryIndex));
     };
     renderGallery();
-    const galleryStep = (dir) => { galleryIndex = (galleryIndex + dir + GALLERY_ITEMS.length) % GALLERY_ITEMS.length; renderGallery(); };
+    const galleryStep = (dir) => {
+      if (!galleryThumbs.length) return;
+      galleryIndex = (galleryIndex + dir + galleryThumbs.length) % galleryThumbs.length;
+      renderGallery();
+    };
     const galleryPrevBtn = document.querySelector('.gallery-prev');
     const galleryNextBtn = document.querySelector('.gallery-next');
     if (galleryPrevBtn) galleryPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); galleryStep(-1); });
