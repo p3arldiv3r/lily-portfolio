@@ -14,9 +14,17 @@
     const CANVAS_W = 2600;
     const CANVAS_H = 1500;
     const rand = (a, b) => a + Math.random() * (b - a);
+    let viewportRect = viewport.getBoundingClientRect();
 
     // -- build the bubble field --
-    const BUBBLE_SIZES = [130, 45, 90, 30, 70, 110, 50, 25, 85, 60, 35, 75, 55, 95, 28, 65, 40, 105, 22, 58, 100, 38, 72, 48, 82, 30];
+    // Bounded to the VIEWPORT, not the much larger 2600x1500 pan canvas --
+    // otherwise most bubbles sit off-screen most of the time (the pan canvas
+    // is sized for "a dragged window can always be panned back into view",
+    // not for how far ambient decoration should roam).
+    const BUBBLE_SIZES = [
+      130, 45, 90, 30, 70, 110, 50, 25, 85, 60, 35, 75, 55, 95, 28, 65, 40, 105, 22, 58, 100, 38, 72, 48, 82, 30,
+      62, 27, 88, 44, 115, 33, 52, 78, 24, 96, 41, 67, 120, 29, 54, 83, 36, 108, 47, 63, 20, 92, 57, 32,
+    ];
     BUBBLE_SIZES.forEach((size) => {
       const d = document.createElement('div');
       d.className = 'bubble';
@@ -28,8 +36,8 @@
       const r = parseFloat(el.style.width) / 2;
       return {
         el, r,
-        x: rand(r, CANVAS_W - r),
-        y: rand(-CANVAS_H, CANVAS_H),
+        x: rand(r, Math.max(r + 1, viewportRect.width - r)),
+        y: rand(0, viewportRect.height),
         vx: 0, vy: 0,
         riseSpeed: rand(14, 28) * (60 / (r * 2)),
         wobblePhase: rand(0, Math.PI * 2),
@@ -37,8 +45,8 @@
       };
     });
     const respawn = (b) => {
-      b.y = CANVAS_H + b.r + rand(0, 150);
-      b.x = rand(b.r, CANVAS_W - b.r);
+      b.y = viewportRect.height + b.r + rand(0, 80);
+      b.x = rand(b.r, Math.max(b.r + 1, viewportRect.width - b.r));
       b.vx = 0; b.vy = 0;
     };
 
@@ -51,7 +59,6 @@
     // how far in that "negative" direction panning (and window dragging)
     // is allowed to go.
     const MARGIN = 500;
-    let viewportRect = viewport.getBoundingClientRect();
     const pan = { x: 0, y: 0 };
     const clampPan = () => {
       const vw = viewport.clientWidth, vh = viewport.clientHeight;
@@ -142,8 +149,11 @@
     const renderGallery = () => {
       const thumb = galleryThumbs[galleryIndex];
       if (!thumb) return;
-      const { image, title, caption } = thumb.dataset;
-      if (galleryPreview) galleryPreview.style.backgroundImage = image ? `url('${image}')` : 'none';
+      const { image, title, caption, alt } = thumb.dataset;
+      if (galleryPreview) {
+        galleryPreview.src = image || '';
+        galleryPreview.alt = alt || title || '';
+      }
       if (galleryFilename) galleryFilename.textContent = title || '';
       if (galleryCaption) galleryCaption.textContent = caption || '';
       galleryThumbs.forEach((t, i) => t.classList.toggle('active', i === galleryIndex));
@@ -200,7 +210,7 @@
         b.y += (b.vy - b.riseSpeed) * dt;
 
         if (b.x < b.r) { b.x = b.r; b.vx = Math.abs(b.vx) * 0.5; }
-        if (b.x > CANVAS_W - b.r) { b.x = CANVAS_W - b.r; b.vx = -Math.abs(b.vx) * 0.5; }
+        if (b.x > viewportRect.width - b.r) { b.x = viewportRect.width - b.r; b.vx = -Math.abs(b.vx) * 0.5; }
 
         if (b.y < -b.r * 2.2) respawn(b);
 
