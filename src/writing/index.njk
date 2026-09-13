@@ -8,6 +8,7 @@ title: Writing — Lillian Trent
 </div>
 
 <section>
+  {%- if collections.posts.length %}
   <div class="writing-list">
   {%- for post in collections.posts | reverse %}
     <div class="write-card">
@@ -20,4 +21,7 @@ title: Writing — Lillian Trent
     </div>
   {%- endfor %}
   </div>
+  {%- else %}
+  <p style="text-align:center; color:var(--ink-soft); font-size:15px;">nothing posted yet — check back soon.</p>
+  {%- endif %}
 </section>

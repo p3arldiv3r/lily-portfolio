@@ -61,7 +61,7 @@ title: Lillian Trent — Portfolio
 
     <div class="desktop-icon" style="left:64px; top:500px;">
       <a class="icon-link" href="https://www.linkedin.com/in/lbtrent/" target="_blank" rel="noopener">
-        <span class="icon-glyph"><img src="/images/icons/linkedin_pixel_icon.png" alt=""></span>
+        <span class="icon-glyph"><img src="/images/icons/linkedin_pixel_icon.png" alt="" style="transform:scale(1.15);"></span>
         <span class="icon-label">linkedin</span>
       </a>
     </div>
@@ -123,6 +123,7 @@ title: Lillian Trent — Portfolio
         <div class="dots"><i></i><i></i><button type="button" class="win-close" aria-label="close"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg></button></div>
       </div>
       <div class="win-body" style="max-height:280px; overflow-y:auto;">
+        {%- if collections.posts.length %}
         {%- for post in collections.posts | reverse | head(3) %}
         <div class="exp-row">
           <b>{{ post.data.title }}</b><br>
@@ -130,6 +131,9 @@ title: Lillian Trent — Portfolio
           <p style="margin:6px 0 0; font-size:12.5px; color:var(--ink-soft); line-height:1.5;">{{ post.data.excerpt }}</p>
         </div>
         {%- endfor %}
+        {%- else %}
+        <p style="text-align:center; color:var(--ink-soft); font-size:13px; margin:20px 0;">nothing posted yet — check back soon.</p>
+        {%- endif %}
         <div style="text-align:center; margin-top:12px;">
           <a class="popup-link" href="/writing/">read all writing →</a>
         </div>
