@@ -335,6 +335,25 @@
       ctx.lineWidth = 3;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
+      const clearCanvas = () => {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, doodleCanvas.width, doodleCanvas.height);
+      };
+      const sendBtn = document.querySelector('.doodle-send');
+      const enableSend = () => {
+        if (!sendBtn) return;
+        sendBtn.disabled = false;
+        sendBtn.style.opacity = '';
+        sendBtn.style.cursor = '';
+      };
+      const disableSend = () => {
+        if (!sendBtn) return;
+        sendBtn.disabled = true;
+        sendBtn.style.opacity = '0.5';
+        sendBtn.style.cursor = 'not-allowed';
+      };
+      disableSend(); // nothing drawn yet -- re-enabled on the first stroke
+
       let drawing = false, lastX = 0, lastY = 0;
       const posOf = (e) => {
         const r = doodleCanvas.getBoundingClientRect();
@@ -348,6 +367,9 @@
         drawing = true;
         doodleCanvas.setPointerCapture(e.pointerId);
         const p = posOf(e); lastX = p.x; lastY = p.y;
+        // a fresh stroke means there's something new to send again, even
+        // if the last drawing was just sent (and the canvas cleared)
+        enableSend();
       });
       doodleCanvas.addEventListener('pointermove', (e) => {
         if (!drawing) return;
@@ -361,14 +383,14 @@
       const clearBtn = document.querySelector('.doodle-clear');
       if (clearBtn) clearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, doodleCanvas.width, doodleCanvas.height);
+        clearCanvas();
+        disableSend();
       });
 
-      const sendBtn = document.querySelector('.doodle-send');
       const doodleStatus = document.querySelector('.doodle-status');
       if (sendBtn) sendBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (sendBtn.disabled) return;
         doodleCanvas.toBlob((blob) => {
           if (!blob) return;
           const data = new FormData();
@@ -381,6 +403,11 @@
             })
             .catch(() => flashStatus(doodleStatus, "hmm, that didn't send — try again?"));
         }, 'image/png');
+        // clear and disable right away, before the request even finishes --
+        // otherwise a fast double-click (or an impatient extra click while
+        // the fetch is still in flight) sends the same doodle multiple times
+        clearCanvas();
+        disableSend();
       });
     }
 
