@@ -201,6 +201,12 @@ footer{
 .desktop-viewport{
   position:relative; overflow:hidden;
   height:calc(100vh - 65px); min-height:520px;
+  /* iOS Safari's 100vh includes space the address bar can hide/show,
+     which can leave a sliver of extra page height (and a scrollbar) on
+     mobile -- 100dvh tracks the actual visible viewport instead. Browsers
+     that don't support dvh just ignore this line and keep the vh value
+     above. */
+  height:calc(100dvh - 65px);
   background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 40%, #ffffff 100%);
   touch-action:none; user-select:none;
 }
@@ -371,6 +377,10 @@ footer{
   .nav-links{ display:none; }
   nav{ padding:14px 20px; }
   .projects-grid{ grid-template-columns:1fr; }
+  /* popup/anchor windows carry desktop-width inline px widths (e.g. 380px)
+     that would overflow a narrow phone screen -- cap them so they always
+     fit, regardless of the inline width set in the markup */
+  .desktop-window{ max-width:92vw; }
 }
 @media (max-width:900px) and (min-width:681px){
   .projects-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }

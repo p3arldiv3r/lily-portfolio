@@ -61,6 +61,22 @@
     // so a window (including the non-closable "welcome" anchor) can never
     // be dragged somewhere its title bar -- or close button -- is no longer
     // reachable. No panning: the viewport is the whole reachable area.
+    //
+    // The popup windows' left/top are hardcoded for a desktop-width canvas
+    // (e.g. the gallery window opens at left:930px), which sits entirely
+    // off-screen on a narrow/mobile viewport -- with no panning left to
+    // reach it, that made it permanently unreachable. clampWinIntoView
+    // pulls a window fully back on-screen; called on every open, not just
+    // while dragging.
+    const clampWinIntoView = (win) => {
+      const rect = win.getBoundingClientRect();
+      const maxLeft = Math.max(0, viewportRect.width - rect.width);
+      const maxTop = Math.max(0, viewportRect.height - rect.height);
+      const left = Math.min(maxLeft, Math.max(0, parseFloat(win.style.left) || 0));
+      const top = Math.min(maxTop, Math.max(0, parseFloat(win.style.top) || 0));
+      win.style.left = left + 'px';
+      win.style.top = top + 'px';
+    };
     const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); };
     window.addEventListener('resize', refreshRect);
 
@@ -163,6 +179,7 @@
         win.classList.add('is-open');
         zCounter += 1;
         win.style.zIndex = zCounter;
+        clampWinIntoView(win);
       };
       link.addEventListener('click', open);
       link.addEventListener('keydown', (e) => {
