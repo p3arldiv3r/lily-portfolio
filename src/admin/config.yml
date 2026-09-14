@@ -64,3 +64,29 @@ collections:
               - { label: "Left (px from the desktop's left edge)", name: "left", widget: "number", value_type: "int", default: 200 }
               - { label: "Top (px from the desktop's top edge)", name: "top", widget: "number", value_type: "int", default: 200 }
               - { label: "Caption (shown on sticky notes only)", name: "caption", widget: "string", required: false }
+
+  - name: "projects"
+    label: "Class Projects"
+    files:
+      - file: "src/_data/projects.json"
+        label: "Projects"
+        name: "projects"
+        fields:
+          - label: "Projects"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} — {{fields.status}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Class/course", name: "course", widget: "string", required: false, hint: "e.g. CS 3510" }
+              - label: "Status"
+                name: "status"
+                widget: "select"
+                default: "in-progress"
+                options:
+                  - { label: "In progress", value: "in-progress" }
+                  - { label: "Done", value: "done" }
+                  - { label: "On hold", value: "on-hold" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Repo link", name: "repo", widget: "string", required: false }
+              - { label: "Demo link", name: "demo", widget: "string", required: false }

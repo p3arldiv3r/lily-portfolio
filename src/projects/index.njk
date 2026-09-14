@@ -1,0 +1,39 @@
+---
+layout: base.njk
+title: Class Projects — Lillian Trent
+---
+<div class="bubble" style="width:90px;height:90px;top:10px;left:4%;"></div>
+<div class="bubble" style="width:50px;height:50px;top:100px;right:8%;"></div>
+<div class="sparkle" style="top:80px;left:22%;"></div>
+<div class="sparkle small" style="top:40px;right:24%;"></div>
+
+<div class="page-head">
+  <h1>projects</h1>
+  <p>work-in-progress class projects from this semester — updated as they go.</p>
+</div>
+
+<div style="max-width:1180px; margin:0 auto; padding:40px 40px 100px;">
+  {%- if projects.items.length %}
+  <div class="projects-grid">
+    {%- for item in projects.items %}
+    <div class="project-tile">
+      <div class="win-bar"><span>{{ item.title }}</span><div class="dots"><i></i><i></i></div></div>
+      <div class="project-body">
+        <span class="status-tag {{ item.status }}">{{ item.status | replace("-", " ") }}</span>
+        <h3 class="project-title">{{ item.title }}</h3>
+        {%- if item.course %}<div class="project-course">{{ item.course }}</div>{%- endif %}
+        <p class="project-desc">{{ item.description }}</p>
+        {%- if item.repo or item.demo %}
+        <div class="project-links">
+          {%- if item.repo %}<a href="{{ item.repo }}" target="_blank" rel="noopener">code →</a>{%- endif %}
+          {%- if item.demo %}<a href="{{ item.demo }}" target="_blank" rel="noopener">demo →</a>{%- endif %}
+        </div>
+        {%- endif %}
+      </div>
+    </div>
+    {%- endfor %}
+  </div>
+  {%- else %}
+  <p style="text-align:center; color:var(--ink-soft); font-size:15px;">nothing posted yet — check back soon.</p>
+  {%- endif %}
+</div>
