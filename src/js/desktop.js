@@ -15,12 +15,20 @@
     let viewportRect = viewport.getBoundingClientRect();
 
     // -- center the welcome window in the viewport on load --
+    // Also re-centered once on the window's 'load' event (fonts/images
+    // settled, mobile browser chrome/address bar sized for real) as a
+    // safety net against the very first measurement being off -- this
+    // only ever fires before a person could plausibly have dragged it.
     const welcomeWin = document.getElementById('welcome-window');
-    if (welcomeWin) {
+    const centerWelcome = () => {
+      if (!welcomeWin) return;
+      viewportRect = viewport.getBoundingClientRect();
       const w = welcomeWin.offsetWidth, h = welcomeWin.offsetHeight;
       welcomeWin.style.left = Math.max(0, (viewportRect.width - w) / 2) + 'px';
       welcomeWin.style.top = Math.max(0, (viewportRect.height - h) / 2) + 'px';
-    }
+    };
+    centerWelcome();
+    window.addEventListener('load', centerWelcome);
 
     // -- build the bubble field --
     // Bounded to the VIEWPORT, not the much larger 2600x1500 pan canvas --
@@ -68,7 +76,18 @@
     // reach it, that made it permanently unreachable. clampWinIntoView
     // pulls a window fully back on-screen; called on every open, not just
     // while dragging.
+    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); };
+    window.addEventListener('resize', refreshRect);
+
+    // Re-measures the viewport fresh every time, rather than trusting the
+    // cached viewportRect -- on mobile, the very first measurement (taken
+    // at page load) can be wrong while the browser's address bar is still
+    // settling into its final size, and a 'resize' event doesn't reliably
+    // follow that settling. Clamping against a stale/undersized rect was
+    // pinning every opened window to the top-left corner, right on top of
+    // the icon column.
     const clampWinIntoView = (win) => {
+      refreshRect();
       const rect = win.getBoundingClientRect();
       const maxLeft = Math.max(0, viewportRect.width - rect.width);
       const maxTop = Math.max(0, viewportRect.height - rect.height);
@@ -77,8 +96,6 @@
       win.style.left = left + 'px';
       win.style.top = top + 'px';
     };
-    const refreshRect = () => { viewportRect = viewport.getBoundingClientRect(); };
-    window.addEventListener('resize', refreshRect);
 
     let zCounter = 10;
     let dragState = null;
@@ -127,6 +144,7 @@
       bar.addEventListener('pointerdown', (e) => {
         if (e.target.closest('.win-close')) return;
         e.stopPropagation();
+        refreshRect();
         const win = bar.closest('.desktop-window');
         zCounter += 1;
         win.style.zIndex = zCounter;
