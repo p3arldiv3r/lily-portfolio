@@ -120,9 +120,8 @@ nav{
   font-family:'Baloo 2', sans-serif;
   font-size:clamp(34px, 6vw, 54px);
   font-weight:700; margin:0 0 8px;
-  background:linear-gradient(180deg, #ffffff 10%, #bfe9ff 35%, var(--glass-blue) 65%, var(--glass-deep) 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  text-shadow:0 1px 0 rgba(255,255,255,0.8), 0 6px 18px rgba(15,93,134,0.25);
+  color:var(--ink-strong);
+  text-shadow:0 2px 10px rgba(15,93,134,0.15);
 }
 .page-head p{ color:var(--ink-soft); font-size:16px; max-width:460px; margin:0 auto; }
 
@@ -186,8 +185,9 @@ section{ position:relative; padding:60px 40px 90px; max-width:1100px; margin:0 a
 .post-article h1{
   font-family:'Baloo 2', sans-serif;
   font-size:clamp(28px, 5vw, 40px);
-  color:var(--glass-deep);
+  font-weight:700;
   margin:10px 0 6px;
+  color:var(--ink-strong);
 }
 .post-article .meta{ color:var(--ink-soft); font-size:13px; font-weight:600; margin-bottom:30px; }
 .post-article .post-body{ font-size:16px; line-height:1.8; color:var(--ink-strong); }
@@ -377,13 +377,18 @@ footer{
 }
 .edu-chip b{ color:var(--ink-strong); }
 
-@media (max-width:680px){
-  /* nav-links used to just be hidden here with nothing standing in for
-     them, which left no way to get to other pages once off the homepage --
-     wrap them onto their own centered row instead */
+/* nav-links used to just be hidden under 680px with nothing standing in
+   for them, which left no way to get to other pages once off the
+   homepage -- and between 681-900px it stayed on the same row as the
+   logo (nav's own space-between), sitting skewed off to the right of
+   "lily's portfolio" instead of wrapping. Wrap it onto its own centered
+   row for the whole phone/tablet range instead of just the narrow end. */
+@media (max-width:900px){
   nav{ padding:12px 16px; flex-wrap:wrap; row-gap:10px; }
   .nav-links{ width:100%; justify-content:center; flex-wrap:wrap; gap:8px; }
   .nav-links a{ padding:6px 12px; font-size:12.5px; }
+}
+@media (max-width:680px){
   .projects-grid{ grid-template-columns:1fr; }
   /* popup/anchor windows carry desktop-width inline px widths (e.g. 380px)
      that would overflow a narrow phone screen -- cap them so they always
