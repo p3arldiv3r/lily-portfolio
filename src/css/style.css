@@ -368,6 +368,15 @@ footer{
 .project-links a{ text-decoration:none; }
 .project-links a:hover{ text-decoration:underline; }
 
+.video-embed{
+  position:relative; width:100%; aspect-ratio:16/9;
+  border-radius:10px; overflow:hidden; margin-top:2px;
+  background:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.85);
+  display:flex; align-items:center; justify-content:center;
+}
+.video-embed iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+.video-embed .video-placeholder{ font-size:12.5px; color:var(--ink-soft); text-align:center; padding:12px; margin:0; }
+
 .edu-row{ display:flex; flex-wrap:wrap; gap:10px; }
 .edu-chip{
   padding:9px 16px; border-radius:14px;
