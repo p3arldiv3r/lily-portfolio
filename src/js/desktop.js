@@ -14,6 +14,14 @@
     const rand = (a, b) => a + Math.random() * (b - a);
     let viewportRect = viewport.getBoundingClientRect();
 
+    // -- center the welcome window in the viewport on load --
+    const welcomeWin = document.getElementById('welcome-window');
+    if (welcomeWin) {
+      const w = welcomeWin.offsetWidth, h = welcomeWin.offsetHeight;
+      welcomeWin.style.left = Math.max(0, (viewportRect.width - w) / 2) + 'px';
+      welcomeWin.style.top = Math.max(0, (viewportRect.height - h) / 2) + 'px';
+    }
+
     // -- build the bubble field --
     // Bounded to the VIEWPORT, not the much larger 2600x1500 pan canvas --
     // otherwise most bubbles sit off-screen most of the time (the pan canvas

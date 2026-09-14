@@ -10,6 +10,7 @@
   --glass-gold-deep:#865d0f;
 }
 *{box-sizing:border-box;}
+button, input, textarea, select{ font-family:inherit; }
 body{
   margin:0;
   min-height:100vh;
