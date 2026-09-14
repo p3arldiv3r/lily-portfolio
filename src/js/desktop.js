@@ -14,6 +14,14 @@
     const rand = (a, b) => a + Math.random() * (b - a);
     let viewportRect = viewport.getBoundingClientRect();
 
+    // How much left margin windows should leave clear for the icon column
+    // running down the left edge -- shared with the CSS width cap (same
+    // custom property) so a window's minimum left position and its max
+    // width always agree on how much room the icons need.
+    const ICON_COL_RESERVE = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--icon-col-reserve')
+    ) || 150;
+
     // -- center the welcome window in the viewport on load --
     // Also re-centered once on the window's 'load' event (fonts/images
     // settled, mobile browser chrome/address bar sized for real) as a
@@ -24,7 +32,13 @@
       if (!welcomeWin) return;
       viewportRect = viewport.getBoundingClientRect();
       const w = welcomeWin.offsetWidth, h = welcomeWin.offsetHeight;
-      welcomeWin.style.left = Math.max(0, (viewportRect.width - w) / 2) + 'px';
+      const maxLeft = Math.max(0, viewportRect.width - w);
+      // True center on a wide screen; on a narrow one, true-center would
+      // sit under the icon column, so floor it at ICON_COL_RESERVE (capped
+      // to whatever actually fits) so it opens beside the icons instead.
+      const minLeft = Math.min(ICON_COL_RESERVE, maxLeft);
+      const left = Math.min(maxLeft, Math.max(minLeft, (viewportRect.width - w) / 2));
+      welcomeWin.style.left = left + 'px';
       welcomeWin.style.top = Math.max(0, (viewportRect.height - h) / 2) + 'px';
     };
     centerWelcome();
@@ -91,7 +105,11 @@
       const rect = win.getBoundingClientRect();
       const maxLeft = Math.max(0, viewportRect.width - rect.width);
       const maxTop = Math.max(0, viewportRect.height - rect.height);
-      const left = Math.min(maxLeft, Math.max(0, parseFloat(win.style.left) || 0));
+      // Same icon-column floor as centerWelcome: keep windows from opening
+      // on top of the icons, only forced lower if the screen's too narrow
+      // to leave that much room and still fit the window at all.
+      const minLeft = Math.min(ICON_COL_RESERVE, maxLeft);
+      const left = Math.min(maxLeft, Math.max(minLeft, parseFloat(win.style.left) || 0));
       const top = Math.min(maxTop, Math.max(0, parseFloat(win.style.top) || 0));
       win.style.left = left + 'px';
       win.style.top = top + 'px';

@@ -1,4 +1,8 @@
 :root{
+  /* how much left margin desktop-window popups reserve on narrow screens
+     so they open beside the icon column instead of covering it -- read by
+     desktop.js too, so the CSS cap and the JS placement clamp stay in sync */
+  --icon-col-reserve:150px;
   --sky-top:#bfe9ff;
   --sky-bottom:#eaf9ff;
   --glass-blue:#3fa7dd;
@@ -156,7 +160,7 @@ section{ position:relative; padding:60px 40px 90px; max-width:1100px; margin:0 a
 /* writing list */
 .writing-list{ display:flex; flex-direction:column; gap:18px; max-width:720px; margin:0 auto; }
 .write-card{
-  border-radius:0 0 16px 16px;
+  border-radius:16px;
   background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(220,245,255,0.4));
   border:1px solid rgba(255,255,255,0.85); border-top:none;
   box-shadow:0 6px 18px rgba(20,90,130,0.1);
@@ -214,7 +218,7 @@ footer{
 
 .desktop-window{
   position:absolute;
-  border-radius:0 0 14px 14px;
+  border-radius:14px;
   background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(222,245,255,0.6));
   border:1px solid rgba(255,255,255,0.9); border-top:none;
   box-shadow:0 10px 30px rgba(20,90,130,0.2);
@@ -314,7 +318,7 @@ footer{
 /* ---- experience page ---- */
 .role-list{ display:flex; flex-direction:column; gap:18px; }
 .role-card{
-  border-radius:0 0 16px 16px;
+  border-radius:16px;
   background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(220,245,255,0.4));
   border:1px solid rgba(255,255,255,0.85); border-top:none;
   box-shadow:0 6px 18px rgba(20,90,130,0.1);
@@ -342,7 +346,7 @@ footer{
 
 .projects-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:20px; }
 .project-tile{
-  border-radius:0 0 14px 14px;
+  border-radius:14px;
   background:var(--card-bg);
   border:1px solid rgba(255,255,255,0.8); border-top:none;
   backdrop-filter: blur(6px);
@@ -374,13 +378,18 @@ footer{
 .edu-chip b{ color:var(--ink-strong); }
 
 @media (max-width:680px){
-  .nav-links{ display:none; }
-  nav{ padding:14px 20px; }
+  /* nav-links used to just be hidden here with nothing standing in for
+     them, which left no way to get to other pages once off the homepage --
+     wrap them onto their own centered row instead */
+  nav{ padding:12px 16px; flex-wrap:wrap; row-gap:10px; }
+  .nav-links{ width:100%; justify-content:center; flex-wrap:wrap; gap:8px; }
+  .nav-links a{ padding:6px 12px; font-size:12.5px; }
   .projects-grid{ grid-template-columns:1fr; }
   /* popup/anchor windows carry desktop-width inline px widths (e.g. 380px)
      that would overflow a narrow phone screen -- cap them so they always
-     fit, regardless of the inline width set in the markup */
-  .desktop-window{ max-width:92vw; }
+     fit, regardless of the inline width set in the markup, and leave the
+     icon column (running down the left edge) clear beside them */
+  .desktop-window{ max-width:calc(100vw - var(--icon-col-reserve)); }
 }
 @media (max-width:900px) and (min-width:681px){
   .projects-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
