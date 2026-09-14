@@ -1,14 +1,19 @@
 {
   "items": [
     {
+      "image": "/images/gallery/ophaniel.png",
+      "title": "Ophaniel Ref. Sheet",
+      "caption": "Protagonist from hit indie game Melt, also known as my OC Opie"
+    },
+    {
       "image": "/images/gallery/addy-gid.gif",
       "title": "Addy - Artfight 2026",
       "caption": "Drawing of my friend's original character Addy!"
     },
     {
-      "image": "/images/gallery/ophaniel.png",
-      "title": "Ophaniel Ref. Sheet",
-      "caption": "Protagonist from hit indie game Melt, also known as my OC Opie"
+      "image": "/images/gallery/asuka.png",
+      "title": "Asuka",
+      "caption": "Drew this after meeting her VA at WreckCon!"
     }
   ]
 }
