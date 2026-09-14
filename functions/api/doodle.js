@@ -1,8 +1,10 @@
 // Cloudflare Pages Function: /api/doodle
-// Replaces Netlify Forms for the doodle pad. Emails the drawn PNG as an
-// attachment via Resend -- Netlify Forms was the only reason file uploads
-// worked before; Web3Forms/Formspree both gate file attachments behind a
-// paid plan, so this is a small function instead.
+// Replaces Netlify Forms for the doodle pad. Saves the drawing to the
+// Cloudflare KV review queue (see /review, doodles-list/-approve/-deny) so
+// it can actually be approved or denied, not just seen in an email -- the
+// KV write is best-effort, so a missing/misbehaving KV binding degrades to
+// "email only" rather than breaking the whole submission. Also emails the
+// PNG as an attachment via Resend as a heads-up / backup copy.
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -25,6 +27,15 @@ export async function onRequestPost(context) {
   const buffer = await file.arrayBuffer();
   const base64 = arrayBufferToBase64(buffer);
 
+  if (env.DOODLES_KV) {
+    try {
+      const id = `doodle:${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
+      await env.DOODLES_KV.put(id, JSON.stringify({ image: base64, createdAt: new Date().toISOString() }));
+    } catch (err) {
+      // don't let a KV hiccup block the email path below
+    }
+  }
+
   const resp = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -35,7 +46,7 @@ export async function onRequestPost(context) {
       from: 'onboarding@resend.dev',
       to: env.NOTIFY_EMAIL,
       subject: 'new doodle submission',
-      text: 'Someone drew you a doodle -- see the attachment.',
+      text: 'Someone drew you a doodle -- approve or deny it at /review, or see the attachment here.',
       attachments: [{ filename: 'doodle.png', content: base64 }],
     }),
   });

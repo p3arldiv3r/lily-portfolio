@@ -1,0 +1,203 @@
+---
+permalink: /review/index.html
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>doodle review — Lillian Trent</title>
+<link rel="icon" type="image/png" href="/images/icons/piplup_favicon_cropped.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#bfe9ff; --sky-bottom:#eaf9ff; --glass-blue:#3fa7dd; --glass-deep:#0f5d86;
+    --ink-strong:#0c3a4d; --ink-soft:#3d6b7d;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100vh; font-family:'Quicksand', sans-serif; color:var(--ink-strong);
+    background:linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 40%, #ffffff 100%);
+    background-repeat:no-repeat; padding:40px 24px 80px;
+  }
+  h1{ font-family:'Baloo 2', sans-serif; font-size:28px; color:var(--glass-deep); margin:0 0 6px; text-align:center; }
+  p.sub{ color:var(--ink-soft); margin:0 0 32px; font-size:14px; text-align:center; }
+  .glass-btn{
+    display:inline-block; padding:10px 22px; border-radius:999px; font-weight:600; font-size:13.5px;
+    color:var(--ink-strong); text-decoration:none; cursor:pointer;
+    background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(190,235,255,0.55));
+    border:1px solid rgba(255,255,255,0.9);
+    box-shadow:inset 0 2px 3px rgba(255,255,255,0.95), 0 6px 14px rgba(15,93,134,0.2);
+    font-family:inherit;
+  }
+  .glass-btn.deny{ background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,210,220,0.55)); }
+  .glass-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+  #loginBox{ text-align:center; margin-top:40px; }
+  #status{ text-align:center; color:var(--ink-soft); margin:40px 0; font-size:14px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:20px; max-width:1100px; margin:0 auto; }
+  .card{
+    background:rgba(255,255,255,0.65); border:1px solid rgba(255,255,255,0.85); border-radius:14px;
+    overflow:hidden; box-shadow:0 8px 24px rgba(20,90,130,0.12); transition:opacity 200ms ease;
+  }
+  .card img{ display:block; width:100%; aspect-ratio:1/1; object-fit:contain; background:#fff; }
+  .card-body{ padding:12px 14px 16px; display:flex; flex-direction:column; gap:8px; }
+  .card-meta{ font-size:11.5px; color:var(--ink-soft); }
+  .card-actions{ display:flex; gap:8px; }
+</style>
+</head>
+<body>
+  <h1>doodle review</h1>
+  <p class="sub">approve or deny doodles submitted from the homepage.</p>
+
+  <div id="loginBox">
+    <button class="glass-btn" id="loginBtn" type="button">login with GitHub</button>
+  </div>
+
+  <div id="status" hidden></div>
+  <div class="grid" id="grid"></div>
+
+<script>
+(function () {
+  'use strict';
+  var TOKEN_KEY = 'doodle_review_token';
+  var loginBox = document.getElementById('loginBox');
+  var statusEl = document.getElementById('status');
+  var grid = document.getElementById('grid');
+  var loginBtn = document.getElementById('loginBtn');
+
+  function showStatus(text) { statusEl.hidden = false; statusEl.textContent = text; }
+  function hideStatus() { statusEl.hidden = true; }
+  function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+  function setToken(t) { sessionStorage.setItem(TOKEN_KEY, t); }
+  function clearToken() { sessionStorage.removeItem(TOKEN_KEY); }
+
+  // Mirrors Decap CMS's own github-backend OAuth handshake exactly (same
+  // /api/auth + /api/callback endpoints Decap uses): the popup pings
+  // 'authorizing:github', we must ping it back before it'll send the real
+  // 'authorization:github:success:{...}' message with the token.
+  function login() {
+    var authWindow = window.open('/api/auth', 'doodle-review-auth', 'width=600,height=700');
+    function onMessage(e) {
+      if (e.data === 'authorizing:github') {
+        authWindow.postMessage('authorizing:github', e.origin);
+        return;
+      }
+      if (typeof e.data !== 'string' || e.data.indexOf('authorization:github:') !== 0) return;
+      window.removeEventListener('message', onMessage);
+      var parts = e.data.split(/authorization:github:(success|error):/);
+      var status = parts[1];
+      var payload = {};
+      try { payload = JSON.parse(parts[2] || '{}'); } catch (err) {}
+      if (status === 'success' && payload.token) {
+        setToken(payload.token);
+        loginBox.hidden = true;
+        loadDoodles();
+      } else {
+        showStatus('login failed -- try again?');
+      }
+    }
+    window.addEventListener('message', onMessage);
+  }
+  loginBtn.addEventListener('click', login);
+
+  function loadDoodles() {
+    var token = getToken();
+    if (!token) { loginBox.hidden = false; return; }
+    showStatus('loading…');
+    fetch('/api/doodles-list', { headers: { Authorization: 'Bearer ' + token } })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res.ok) {
+          if (res.error === 'invalid token' || res.error === 'missing token') {
+            clearToken();
+            loginBox.hidden = false;
+            showStatus('session expired -- log in again?');
+            return;
+          }
+          showStatus(res.error === 'no write access to repo'
+            ? "you don't have access to review doodles"
+            : 'could not load doodles: ' + res.error);
+          return;
+        }
+        render(res.items);
+      })
+      .catch(function () { showStatus('could not load doodles -- try refreshing?'); });
+  }
+
+  function render(items) {
+    grid.innerHTML = '';
+    if (!items.length) { showStatus('nothing pending -- all caught up!'); return; }
+    hideStatus();
+    items.forEach(function (item) {
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      var img = document.createElement('img');
+      img.src = 'data:image/png;base64,' + item.image;
+      img.alt = 'submitted doodle';
+
+      var body = document.createElement('div');
+      body.className = 'card-body';
+
+      var meta = document.createElement('div');
+      meta.className = 'card-meta';
+      meta.textContent = new Date(item.createdAt).toLocaleString();
+
+      var actions = document.createElement('div');
+      actions.className = 'card-actions';
+
+      var approveBtn = document.createElement('button');
+      approveBtn.type = 'button';
+      approveBtn.className = 'glass-btn';
+      approveBtn.textContent = 'approve';
+      approveBtn.addEventListener('click', function () { act('approve', item.id, card, [approveBtn, denyBtn]); });
+
+      var denyBtn = document.createElement('button');
+      denyBtn.type = 'button';
+      denyBtn.className = 'glass-btn deny';
+      denyBtn.textContent = 'deny';
+      denyBtn.addEventListener('click', function () { act('deny', item.id, card, [approveBtn, denyBtn]); });
+
+      actions.appendChild(approveBtn);
+      actions.appendChild(denyBtn);
+      body.appendChild(meta);
+      body.appendChild(actions);
+      card.appendChild(img);
+      card.appendChild(body);
+      grid.appendChild(card);
+    });
+  }
+
+  function act(kind, id, card, buttons) {
+    var token = getToken();
+    buttons.forEach(function (b) { b.disabled = true; });
+    card.style.opacity = '0.4';
+    fetch('/api/doodles-' + kind, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+      body: JSON.stringify({ id: id }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.ok) {
+          card.remove();
+          if (!grid.children.length) showStatus('nothing pending -- all caught up!');
+        } else {
+          buttons.forEach(function (b) { b.disabled = false; });
+          card.style.opacity = '';
+          alert('failed: ' + res.error);
+        }
+      })
+      .catch(function () {
+        buttons.forEach(function (b) { b.disabled = false; });
+        card.style.opacity = '';
+        alert('network error -- try again?');
+      });
+  }
+
+  if (getToken()) { loginBox.hidden = true; loadDoodles(); }
+})();
+</script>
+</body>
+</html>
